@@ -30,6 +30,7 @@ class TaskResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             // Relationships
+            'created_by' => new UserResource($this->whenLoaded('createdBy')),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'min_members' => $this->when($this->relationLoaded('members'), function () {
                 return UserResource::collection($this->members->slice(0, 3));

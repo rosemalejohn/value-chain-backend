@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory()->create([
             'name' => 'John Doe',
             'email' => 'johndoe@gmail.com',
-            'password' => bcrypt('password')
+            'password' => bcrypt('password'),
         ]);
 
         $roles = [
@@ -34,9 +34,8 @@ class DatabaseSeeder extends Seeder
         foreach ($roles as $role) {
             Role::create([
                 'name' => $role,
-                'guard_name' => 'api'
+                'guard_name' => 'api',
             ]);
         }
-
     }
 }

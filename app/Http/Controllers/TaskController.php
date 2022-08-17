@@ -17,7 +17,7 @@ class TaskController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $tasks = QueryBuilder::for(Task::class)
-            ->allowedIncludes('members')
+            ->allowedIncludes('members.avatar')
             ->allowedFilters([
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('priority'),
@@ -46,6 +46,16 @@ class TaskController extends Controller
         }
 
         $task->load('members');
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * View task information
+     */
+    public function show(Task $task): TaskResource
+    {
+        $task->load('members.avatar', 'createdBy');
 
         return new TaskResource($task);
     }

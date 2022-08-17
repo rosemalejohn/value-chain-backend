@@ -32,7 +32,7 @@ class StoreUserRequest extends FormRequest
                 'sometimes',
                 'required',
                 'email',
-                Rule::unique('users')->ignore($this->route('user'))
+                Rule::unique('users')->ignore($this->route('user')),
             ],
             'roles' => 'nullable|array',
             'roles.*' => [

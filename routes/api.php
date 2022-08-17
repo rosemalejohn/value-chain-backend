@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(TaskController::class)->group(function () {
         Route::get('tasks', 'index')->name('tasks.index');
         Route::post('tasks', 'store')->name('tasks.store');
+        Route::get('tasks/{task}', 'show')->name('tasks.show');
         Route::put('tasks/{task}', 'update')->name('tasks.update');
     });
 });

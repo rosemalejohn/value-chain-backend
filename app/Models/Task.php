@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\MediaCollectionType;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Task extends Model
 {
@@ -20,6 +23,7 @@ class Task extends Model
         'priority',
         'due_date',
         'order',
+        'status',
     ];
 
     protected $casts = [
@@ -32,6 +36,22 @@ class Task extends Model
         'completed_at',
         'archived_at',
     ];
+
+    /*
+    |--------------------------------------------------------------------------
+    | Media Collections
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Register media collections
+     *
+     * @return void
+     */
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollectionType::TaskAttachments->value);
+    }
 
     /**
      * Task members
@@ -55,5 +75,14 @@ class Task extends Model
     public function isOwner(User $user): bool
     {
         return $user->created_by === $user->id;
+    }
+
+    /**
+     * Attachments
+     */
+    public function attachments(): MorphMany
+    {
+        return $this->morphMany(Media::class, 'model')
+            ->where('collection_name', MediaCollectionType::TaskAttachments->value);
     }
 }

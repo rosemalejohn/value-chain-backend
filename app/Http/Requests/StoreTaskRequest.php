@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\TaskAssignmentRole;
 use App\Enums\TaskPriority;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -45,9 +46,13 @@ class StoreTaskRequest extends FormRequest
                 'sometimes',
                 'array',
             ],
-            'members.*' => [
+            'members.*.user_id' => [
                 'required',
                 Rule::exists('users', 'id'),
+            ],
+            'members.*.role' => [
+                'required',
+                new Enum(TaskAssignmentRole::class),
             ],
         ];
     }

@@ -55,7 +55,7 @@ class TaskController extends Controller
      */
     public function show(Task $task): TaskResource
     {
-        $task->load('members.avatar', 'createdBy');
+        $task->load('members.avatar', 'createdBy', 'attachments');
 
         return new TaskResource($task);
     }

@@ -17,7 +17,10 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('update', $this->route('task'));
+        if ($this->route('task')) {
+            return $this->user()->can('update', $this->route('task'));
+        }
+        return true;
     }
 
     /**

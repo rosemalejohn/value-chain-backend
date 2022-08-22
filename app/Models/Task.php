@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MediaCollectionType;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -41,7 +42,7 @@ class Task extends Model
     |--------------------------------------------------------------------------
     | Media Collections
     |--------------------------------------------------------------------------
-    */
+     */
 
     /**
      * Register media collections
@@ -85,5 +86,21 @@ class Task extends Model
     {
         return $this->morphMany(Media::class, 'model')
             ->where('collection_name', MediaCollectionType::TaskAttachments->value);
+    }
+
+    /**
+     * Return task for current user only
+     */
+    public function scopeForCurrentUser(Builder $query): void
+    {
+        if (! auth()->user()->hasRole('admin')) {
+            $query->where(function ($query) {
+                $query
+                    ->whereHas('members', function ($query) {
+                        $query->where('user_id', auth()->id());
+                    })
+                    ->orWhere('created_by', auth()->id());
+            });
+        }
     }
 }

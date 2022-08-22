@@ -25,6 +25,11 @@ class UserResource extends JsonResource
             'created_at' => $this->created_at,
             // Relationships
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
+            'task_member' => $this->whenPivotLoaded('task_members', function () {
+                return [
+                    'role' => $this->pivot->role,
+                ];
+            }),
         ];
     }
 }

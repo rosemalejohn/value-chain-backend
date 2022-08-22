@@ -58,7 +58,8 @@ class Task extends Model
      */
     public function members(): BelongsToMany
     {
-        return $this->belongsToMany(User::class, 'task_members');
+        return $this->belongsToMany(User::class, 'task_members')
+            ->withPivot('role');
     }
 
     /**

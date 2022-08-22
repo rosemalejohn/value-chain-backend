@@ -22,7 +22,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('priority'),
             ])
-            ->paginate(request('perPage'));
+            ->paginate(request('perPage', 20));
 
         return TaskResource::collection($tasks);
     }

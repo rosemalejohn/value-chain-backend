@@ -22,6 +22,7 @@ class TaskResource extends JsonResource
             'priority' => $this->priority,
             'priority_text' => optional($this->priority)->description(),
             'status' => $this->status,
+            'step' => $this->step,
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
             'due_date' => $this->due_date,
@@ -31,6 +32,7 @@ class TaskResource extends JsonResource
             'updated_at' => $this->updated_at,
             // Relationships
             'created_by' => new UserResource($this->whenLoaded('createdBy')),
+            'initiator' => new UserResource($this->whenLoaded('initiator')),
             'attachments' => MediaResource::collection($this->whenLoaded('attachments')),
             'members' => UserResource::collection($this->whenLoaded('members')),
             'min_members' => $this->when($this->relationLoaded('members'), function () {

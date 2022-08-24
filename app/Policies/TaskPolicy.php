@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enums\TaskAssignmentRole;
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -22,5 +23,13 @@ class TaskPolicy
             ->exists();
 
         return $task->isOwner($user) || $isManager || $user->hasRole('admin');
+    }
+
+    /**
+     * Check if user can update task status
+     */
+    public function updateStatus(Authenticatable $user, Task $task)
+    {
+        return $user->hasRole('admin') && $task->status !== TaskStatus::Accepted;
     }
 }

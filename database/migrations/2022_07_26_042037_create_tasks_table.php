@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\TaskAssignmentRole;
+use App\Enums\TaskStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,13 +18,17 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('created_by')->constrained('users');
+            $table->foreignId('initiator_id')->constrained('users')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('outcome')->nullable();
             $table->tinyInteger('priority')->nullable();
-            $table->tinyInteger('status')->nullable();
+            $table->tinyInteger('status')->default(TaskStatus::Pending->value);
+            $table->tinyInteger('step')->nullable();
+            $table->tinyInteger('step_status')->nullable();
             $table->integer('order');
             $table->dateTime('due_date')->nullable();
+            $table->string('estimate')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('archived_at')->nullable();
             $table->timestamps();

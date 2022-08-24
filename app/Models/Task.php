@@ -18,6 +18,7 @@ class Task extends Model
     use HasFactory;
 
     protected $fillable = [
+        'initiator_id',
         'title',
         'description',
         'outcome',
@@ -25,6 +26,7 @@ class Task extends Model
         'due_date',
         'order',
         'status',
+        'step',
     ];
 
     protected $casts = [
@@ -72,6 +74,14 @@ class Task extends Model
     }
 
     /**
+     * Task initiator
+     */
+    public function initiator()
+    {
+        return $this->belongsTo(User::class, 'initiator_id');
+    }
+
+    /**
      * Check if user is owner of task
      */
     public function isOwner(User $user): bool
@@ -86,6 +96,14 @@ class Task extends Model
     {
         return $this->morphMany(Media::class, 'model')
             ->where('collection_name', MediaCollectionType::TaskAttachments->value);
+    }
+
+    /**
+     * Get accepted tasks
+     */
+    public function scopeAccepted(Builder $query)
+    {
+        $query->whereStatus(TaskStatus::Accepted);
     }
 
     /**

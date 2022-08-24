@@ -4,10 +4,9 @@ namespace App\Enums;
 
 enum TaskPriority: int implements HasDescription
 {
-    case Urgent = 1;
-    case High = 2;
-    case Normal = 3;
-    case Low = 4;
+    case Low = 1;
+    case Normal = 2;
+    case High = 3;
 
     /**
      * Enum description
@@ -15,7 +14,6 @@ enum TaskPriority: int implements HasDescription
     public function description(): string
     {
         return match ($this) {
-            self::Urgent => 'Urgent',
             self::High => 'High',
             self::Normal => 'Normal',
             self::Low => 'Low'

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Enums\TaskAssignmentRole;
 use App\Enums\TaskPriority;
+use App\Enums\TaskStep;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
@@ -20,6 +21,7 @@ class StoreTaskRequest extends FormRequest
         if ($this->route('task')) {
             return $this->user()->can('update', $this->route('task'));
         }
+
         return true;
     }
 
@@ -31,6 +33,11 @@ class StoreTaskRequest extends FormRequest
     public function rules()
     {
         return [
+            'initiator_id' => [
+                'sometimes',
+                'required',
+                Rule::exists('users', 'id'),
+            ],
             'title' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|nullable|string',
             'outcome' => 'sometimes|nullable|string',
@@ -56,6 +63,9 @@ class StoreTaskRequest extends FormRequest
             'members.*.role' => [
                 'required',
                 new Enum(TaskAssignmentRole::class),
+            ],
+            'step' => [
+                new Enum(TaskStep::class),
             ],
         ];
     }

@@ -23,10 +23,8 @@ class DatabaseSeeder extends Seeder
 
         $roles = [
             'admin',
-            'manager',
-            'member',
             'measurement',
-            'ab_tester',
+            'tester',
             'staging',
             'deployment',
         ];

@@ -18,7 +18,10 @@ class TaskController extends Controller
     {
         $tasks = QueryBuilder::for(Task::class)
             ->forCurrentUser()
-            ->allowedIncludes('members.avatar')
+            ->allowedIncludes([
+                'members.avatar',
+                'initiator',
+            ])
             ->allowedFilters([
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('priority'),
@@ -34,6 +37,7 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request): TaskResource
     {
         $task = $request->user()->createdTasks()->create([
+            'initiator_id' => $request->initiator_id,
             'title' => $request->title,
             'description' => $request->description,
             'outcome' => $request->outcome,
@@ -56,7 +60,7 @@ class TaskController extends Controller
      */
     public function show(Task $task): TaskResource
     {
-        $task->load('members.avatar', 'createdBy', 'attachments');
+        $task->load('members.avatar', 'createdBy', 'attachments', 'initiator');
 
         return new TaskResource($task);
     }
@@ -68,12 +72,13 @@ class TaskController extends Controller
     {
         $task->fill(
             $request->only([
+                'initiator_id',
                 'title',
                 'description',
                 'outcome',
                 'priority',
                 'due_date',
-                'status',
+                'step',
             ])
         );
         $task->save();

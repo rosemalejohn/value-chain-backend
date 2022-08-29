@@ -23,6 +23,7 @@ class TaskResource extends JsonResource
             'priority_text' => optional($this->priority)->description(),
             'status' => $this->status,
             'step' => $this->step,
+            'step_status' => $this->step_status,
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
             'due_date' => $this->due_date,

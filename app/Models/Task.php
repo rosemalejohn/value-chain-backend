@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\MediaCollectionType;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
+use App\Enums\TaskStep;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -24,14 +25,18 @@ class Task extends Model
         'outcome',
         'priority',
         'due_date',
+        'estimate',
         'order',
         'status',
         'step',
+        'step_status',
     ];
 
     protected $casts = [
         'status' => TaskStatus::class,
         'priority' => TaskPriority::class,
+        'step' => TaskStep::class,
+        'step_status' => TaskStatus::class,
     ];
 
     protected $dates = [

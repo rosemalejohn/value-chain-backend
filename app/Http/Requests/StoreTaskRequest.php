@@ -5,7 +5,9 @@ namespace App\Http\Requests;
 use App\Enums\TaskAssignmentRole;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStep;
+use App\Enums\TaskStepStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Enum;
 
@@ -67,6 +69,27 @@ class StoreTaskRequest extends FormRequest
             'step' => [
                 new Enum(TaskStep::class),
             ],
+            'step_status' => [
+                new Enum(TaskStepStatus::class),
+            ],
         ];
+    }
+
+    /**
+     * Configure the validator instance.
+     *
+     * @param  \Illuminate\Validation\Validator  $validator
+     * @return void
+     */
+    public function withValidator($validator)
+    {
+        $this->merge([
+            'formatted_members' => Arr::map(
+                Arr::keyBy($this->members, 'user_id'),
+                function ($value) {
+                    return Arr::only($value, ['role']);
+                }
+            ),
+        ]);
     }
 }

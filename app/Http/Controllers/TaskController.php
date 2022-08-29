@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStepStatus;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Arr;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -25,6 +27,10 @@ class TaskController extends Controller
             ->allowedFilters([
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('priority'),
+            ])
+            ->allowedSorts([
+                'title',
+                'priority',
             ])
             ->paginate(request('perPage', 20));
 
@@ -47,7 +53,7 @@ class TaskController extends Controller
         ]);
 
         if ($request->has('members')) {
-            $task->members()->sync($request->members);
+            $task->members()->sync($request->formatted_members);
         }
 
         $task->load('members');
@@ -79,12 +85,18 @@ class TaskController extends Controller
                 'priority',
                 'due_date',
                 'step',
+                'step_status',
             ])
         );
+
+        if ($task->isDirty('step')) {
+            $task->step_status = TaskStepStatus::Pending->value;
+        }
+
         $task->save();
 
         if ($request->has('members')) {
-            $task->members()->sync($request->members);
+            $task->members()->sync($request->formatted_members);
         }
 
         $task->load('members');

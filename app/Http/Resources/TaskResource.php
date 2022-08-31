@@ -26,7 +26,7 @@ class TaskResource extends JsonResource
             'step_status' => $this->step_status,
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
-            'due_date' => $this->due_date,
+            'due_date' => optional($this->due_date)->format('Y-m-d'),
             'completed_at' => $this->completed_at,
             'archived_at' => $this->archived_at,
             'created_at' => $this->created_at,

@@ -7,6 +7,7 @@ enum UserRole: string implements HasDescription
     case Admin = 'admin';
     case Measurement = 'measurement';
     case AbTester = 'tester';
+    case QATester = 'qa';
     case Staging = 'staging';
     case Deployment = 'deployment';
 
@@ -19,6 +20,7 @@ enum UserRole: string implements HasDescription
             self::Admin => 'Administrator',
             self::Measurement => 'Measurement',
             self::AbTester => 'AB Tester',
+            self::QATester => 'QA Tester',
             self::Staging => 'Staging',
             self::Deployment => 'Deployer',
         };

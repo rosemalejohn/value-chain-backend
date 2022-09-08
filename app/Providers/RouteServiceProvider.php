@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\TaskMeasurement;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -27,6 +28,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+
+        Route::model('task_measurement', TaskMeasurement::class);
 
         $this->routes(function () {
             Route::middleware('api')

@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Enums\UserRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 
@@ -15,7 +17,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->create([
+        $user = \App\Models\User::factory()->create([
             'name' => 'John Doe',
             'email' => 'johndoe@gmail.com',
             'password' => bcrypt('password'),
@@ -35,5 +37,7 @@ class DatabaseSeeder extends Seeder
                 'guard_name' => 'api',
             ]);
         }
+
+        $user->assignRole(UserRole::Admin->value);
     }
 }

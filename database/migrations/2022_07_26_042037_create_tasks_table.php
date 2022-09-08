@@ -17,6 +17,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->nestedSet();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('initiator_id')->constrained('users')->nullable();
             $table->string('title');

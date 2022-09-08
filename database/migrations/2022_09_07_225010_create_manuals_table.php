@@ -19,6 +19,12 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('task_manuals', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('task_id')->constrained('tasks')->cascadeOnDelete();
+            $table->foreignId('manual_id')->constrained('manuals')->cascadeOnDelete();
+        });
     }
 
     /**
@@ -28,6 +34,7 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('task_manuals');
         Schema::dropIfExists('manuals');
     }
 };

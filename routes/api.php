@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ManualController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskManualController;
+use App\Http\Controllers\TaskMeasurementController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +38,23 @@ Route::middleware('auth')->group(function () {
         Route::post('tasks', 'store')->name('tasks.store');
         Route::get('tasks/{task}', 'show')->name('tasks.show');
         Route::put('tasks/{task}', 'update')->name('tasks.update');
+    });
+
+    Route::controller(TaskMeasurementController::class)->group(function () {
+        Route::post('tasks/{task}/measurements', 'store')->name('tasks.measurements.store');
+        Route::put('tasks/{task}/measurements/{task_measurement}', 'update')->name('tasks.measurements.update');
+        Route::delete('tasks/{task}/measurements/{task_measurement}', 'destroy')->name('tasks.measurement.destroy');
+    });
+
+    Route::controller(TaskManualController::class)->group(function () {
+        Route::post('tasks/{task}/manuals', 'store')->name('tasks.manuals.store');
+        Route::delete('tasks/{task}/manuals/{task_manual}', 'destroy')->name('tasks.manauls.destroy');
+    });
+
+    Route::controller(ManualController::class)->group(function () {
+        Route::get('manuals', 'index')->name('manuals.index');
+        Route::post('manuals', 'store')->name('manuals.store');
+        Route::put('manuals/{manual}', 'update')->name('manuals.update');
     });
 
     Route::put('tasks/{task}/status', TaskStatusController::class)->name('task.status.update');

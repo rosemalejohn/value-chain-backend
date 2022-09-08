@@ -14,11 +14,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Kalnoy\Nestedset\NodeTrait;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Task extends Model
 {
-    use HasFactory;
+    use HasFactory, NodeTrait;
 
     protected $fillable = [
         'initiator_id',
@@ -88,9 +89,20 @@ class Task extends Model
         return $this->belongsTo(User::class, 'initiator_id');
     }
 
+    /**
+     * Task list of measurements
+     */
     public function measurements(): HasMany
     {
         return $this->hasMany(TaskMeasurement::class);
+    }
+
+    /**
+     * Task manuals
+     */
+    public function manuals(): BelongsToMany
+    {
+        return $this->belongsToMany(Manual::class);
     }
 
     /**

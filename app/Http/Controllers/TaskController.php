@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\TaskStepStatus;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -25,11 +24,13 @@ class TaskController extends Controller
             ])
             ->allowedFilters([
                 AllowedFilter::exact('status'),
+                AllowedFilter::exact('step'),
                 AllowedFilter::exact('priority'),
             ])
             ->allowedSorts([
                 'title',
                 'priority',
+                'impact',
             ])
             ->paginate(request('perPage', 20));
 
@@ -47,6 +48,7 @@ class TaskController extends Controller
             'description' => $request->description,
             'outcome' => $request->outcome,
             'priority' => $request->priority,
+            'impact' => $request->impact,
             'due_date' => $request->due_date,
             'order' => 1,
         ]);
@@ -65,7 +67,13 @@ class TaskController extends Controller
      */
     public function show(Task $task): TaskResource
     {
-        $task->load('members.avatar', 'createdBy', 'attachments', 'initiator');
+        $task->load(
+            'members.avatar',
+            'createdBy',
+            'attachments',
+            'initiator',
+            'measurements'
+        );
 
         return new TaskResource($task);
     }
@@ -82,15 +90,11 @@ class TaskController extends Controller
                 'description',
                 'outcome',
                 'priority',
+                'impact',
                 'due_date',
                 'step',
-                'step_status',
             ])
         );
-
-        if ($task->isDirty('step')) {
-            $task->step_status = TaskStepStatus::Pending->value;
-        }
 
         $task->save();
 

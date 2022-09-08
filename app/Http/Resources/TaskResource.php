@@ -39,6 +39,7 @@ class TaskResource extends JsonResource
             'min_members' => $this->when($this->relationLoaded('members'), function () {
                 return UserResource::collection($this->members->slice(0, 3));
             }),
+            'measurements' => TaskMeasurementResource::collection($this->whenLoaded('measurements')),
         ];
     }
 }

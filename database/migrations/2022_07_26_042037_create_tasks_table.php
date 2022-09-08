@@ -23,12 +23,12 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->text('outcome')->nullable();
             $table->tinyInteger('priority')->nullable();
+            $table->tinyInteger('impact')->nullable();
             $table->tinyInteger('status')->default(TaskStatus::Pending->value);
             $table->tinyInteger('step')->nullable();
-            $table->tinyInteger('step_status')->nullable();
             $table->integer('order');
             $table->dateTime('due_date')->nullable();
-            $table->string('estimate')->nullable();
+            $table->float('estimate')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('archived_at')->nullable();
             $table->timestamps();

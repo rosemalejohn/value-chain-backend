@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\TaskAssignmentRole;
+use App\Enums\TaskImpact;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStep;
 use App\Enums\TaskStepStatus;
@@ -47,6 +48,11 @@ class StoreTaskRequest extends FormRequest
                 'sometimes',
                 'required',
                 new Enum(TaskPriority::class),
+            ],
+            'impact' => [
+                'sometimes',
+                'required',
+                new Enum(TaskImpact::class),
             ],
             'due_date' => [
                 'sometimes',

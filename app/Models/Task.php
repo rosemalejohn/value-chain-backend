@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\MediaCollectionType;
+use App\Enums\TaskImpact;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStatus;
 use App\Enums\TaskStep;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
@@ -24,19 +26,19 @@ class Task extends Model
         'description',
         'outcome',
         'priority',
-        'due_date',
-        'estimate',
-        'order',
+        'impact',
         'status',
         'step',
-        'step_status',
+        'order',
+        'due_date',
+        'estimate',
     ];
 
     protected $casts = [
         'status' => TaskStatus::class,
         'priority' => TaskPriority::class,
         'step' => TaskStep::class,
-        'step_status' => TaskStatus::class,
+        'impact' => TaskImpact::class,
     ];
 
     protected $dates = [
@@ -81,9 +83,14 @@ class Task extends Model
     /**
      * Task initiator
      */
-    public function initiator()
+    public function initiator(): BelongsTo
     {
         return $this->belongsTo(User::class, 'initiator_id');
+    }
+
+    public function measurements(): HasMany
+    {
+        return $this->hasMany(TaskMeasurement::class);
     }
 
     /**

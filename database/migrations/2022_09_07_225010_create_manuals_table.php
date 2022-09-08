@@ -13,11 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('task_measurements', function (Blueprint $table) {
+        Schema::create('manuals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained('tasks');
-            $table->string('measurement')->nullable();
-            $table->timestamp('checked_at')->nullable();
+            $table->string('title');
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_measurements');
+        Schema::dropIfExists('manuals');
     }
 };

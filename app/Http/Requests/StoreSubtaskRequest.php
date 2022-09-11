@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Task;
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTaskMeasurement extends FormRequest
+class StoreSubtaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,7 +14,7 @@ class StoreTaskMeasurement extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('create', new Task());
+        return $this->user()->hasRole(UserRole::QATester->value);
     }
 
     /**
@@ -25,8 +25,7 @@ class StoreTaskMeasurement extends FormRequest
     public function rules()
     {
         return [
-            'measurement' => 'required|string|max:255',
-            'is_checked' => 'required|boolean',
+            'title' => 'required',
         ];
     }
 }

@@ -21,6 +21,8 @@ class TaskResource extends JsonResource
             'outcome' => $this->outcome,
             'priority' => $this->priority,
             'priority_text' => optional($this->priority)->description(),
+            'impact' => $this->impact,
+            'impact_text' => optional($this->impact)->description(),
             'status' => $this->status,
             'step' => $this->step,
             'step_status' => $this->step_status,

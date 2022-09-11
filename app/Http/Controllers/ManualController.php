@@ -51,8 +51,20 @@ class ManualController extends Controller
     /**
      * Update manual
      */
-    public function update(StoreManualRequest $request, Manual $manual)
+    public function update(StoreManualRequest $request, Manual $manual): ManualResource
     {
-        $
+        $manual->fill(
+            $request->only([
+                'title',
+                'description',
+            ])
+        );
+        $manual->save();
+
+        $manual->addMedia($request->file_attachment)
+            ->toMediaCollection(MediaCollectionType::ManualFile->value);
+        $manual->load('fileAttachment');
+
+        return new ManualResource($manual);
     }
 }

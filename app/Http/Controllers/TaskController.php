@@ -93,6 +93,7 @@ class TaskController extends Controller
                 'impact',
                 'due_date',
                 'step',
+                'status',
             ])
         );
 

@@ -15,13 +15,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Kalnoy\Nestedset\NodeTrait;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Task extends Model
+class Task extends Model implements HasMedia
 {
-    use HasFactory, NodeTrait;
+    use HasFactory;
+    use NodeTrait;
+    use InteractsWithMedia;
 
     protected $fillable = [
+        'created_by',
         'initiator_id',
         'title',
         'description',

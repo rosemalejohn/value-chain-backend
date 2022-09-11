@@ -13,7 +13,13 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Manual extends Model implements HasMedia
 {
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+    use InteractsWithMedia;
+
+    protected $fillable = [
+        'title',
+        'description',
+    ];
 
     /*
     |--------------------------------------------------------------------------

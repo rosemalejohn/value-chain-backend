@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TaskManualController extends Controller
 {
@@ -32,5 +33,11 @@ class TaskManualController extends Controller
      */
     public function destroy(Task $task, int $taskManualId)
     {
+        DB::table('task_manuals')
+            ->where('task_id', $task->id)
+            ->whereId($taskManualId)
+            ->delete();
+
+        return $this->respondWithEmptyData();
     }
 }

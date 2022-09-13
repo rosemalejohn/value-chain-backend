@@ -6,8 +6,8 @@ enum UserRole: string implements HasDescription
 {
     case Admin = 'admin';
     case Measurement = 'measurement';
-    case AbTester = 'tester';
-    case QATester = 'qa';
+    case AbTester = 'ab_tester';
+    case QATester = 'qa_tester';
     case Staging = 'staging';
     case Deployment = 'deployment';
 

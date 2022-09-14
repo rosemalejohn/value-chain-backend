@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -97,9 +96,10 @@ class Task extends Model implements HasMedia
     /**
      * Task list of measurements
      */
-    public function measurements(): HasMany
+    public function measurements(): BelongsToMany
     {
-        return $this->hasMany(TaskMeasurement::class);
+        return $this->belongsToMany(Measurement::class, 'task_measurements')
+            ->withPivot('checked_at');
     }
 
     /**
@@ -149,5 +149,15 @@ class Task extends Model implements HasMedia
                     ->orWhere('created_by', auth()->id());
             });
         }
+    }
+
+    /**
+     * Assigned task
+     */
+    public function scopeAssigned(Builder $query): void
+    {
+        $query->whereHas('members', function ($query) {
+            $query->where('user_id', auth()->id());
+        })->accepted();
     }
 }

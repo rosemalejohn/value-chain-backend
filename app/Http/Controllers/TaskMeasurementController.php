@@ -16,7 +16,7 @@ class TaskMeasurementController extends Controller
     public function store(StoreTaskMeasurement $request, Task $task)
     {
         $taskMeasurement = $task->measurements()->create([
-            'measurement' => $request->measurement,
+            'measurement_id' => $request->measurement_id,
             'checked_at' => $request->is_checked ? now() : null,
         ]);
 

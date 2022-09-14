@@ -25,7 +25,6 @@ class TaskResource extends JsonResource
             'impact_text' => optional($this->impact)->description(),
             'status' => $this->status,
             'step' => $this->step,
-            'step_status' => $this->step_status,
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
             'due_date' => optional($this->due_date)->format('Y-m-d'),
@@ -41,7 +40,7 @@ class TaskResource extends JsonResource
             'min_members' => $this->when($this->relationLoaded('members'), function () {
                 return UserResource::collection($this->members->slice(0, 3));
             }),
-            'measurements' => TaskMeasurementResource::collection($this->whenLoaded('measurements')),
+            'measurements' => MeasurementResource::collection($this->whenLoaded('measurements')),
         ];
     }
 }

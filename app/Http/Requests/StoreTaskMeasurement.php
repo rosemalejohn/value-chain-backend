@@ -25,7 +25,7 @@ class StoreTaskMeasurement extends FormRequest
     public function rules()
     {
         return [
-            'measurement' => 'required|string|max:255',
+            'measurement_id' => 'required|exists:measurements,id',
             'is_checked' => 'required|boolean',
         ];
     }

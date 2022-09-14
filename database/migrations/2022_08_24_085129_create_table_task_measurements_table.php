@@ -13,10 +13,16 @@ return new class() extends Migration
      */
     public function up()
     {
+        Schema::create('measurements', function (Blueprint $table) {
+            $table->id();
+            $table->text('measurement');
+            $table->timestamps();
+        });
+
         Schema::create('task_measurements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('task_id')->constrained('tasks');
-            $table->string('measurement')->nullable();
+            $table->foreignId('measurement_id')->constrained('measurements');
             $table->timestamp('checked_at')->nullable();
             $table->timestamps();
         });
@@ -30,5 +36,6 @@ return new class() extends Migration
     public function down()
     {
         Schema::dropIfExists('task_measurements');
+        Schema::dropIfExists('measurements');
     }
 };

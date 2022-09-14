@@ -11,7 +11,7 @@ class TaskMeasurement extends Model
     use HasFactory;
 
     protected $fillable = [
-        'measurement',
+        'measurement_id',
         'checked_at',
     ];
 

@@ -17,7 +17,6 @@ class TaskController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $tasks = QueryBuilder::for(Task::class)
-            ->forCurrentUser()
             ->allowedIncludes([
                 'members.avatar',
                 'initiator',
@@ -26,6 +25,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('status'),
                 AllowedFilter::exact('step'),
                 AllowedFilter::exact('priority'),
+                AllowedFilter::scope('assigned'),
             ])
             ->allowedSorts([
                 'title',

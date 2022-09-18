@@ -6,7 +6,6 @@ use App\Enums\TaskAssignmentRole;
 use App\Enums\TaskImpact;
 use App\Enums\TaskPriority;
 use App\Enums\TaskStep;
-use App\Enums\TaskStepStatus;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Arr;
 use Illuminate\Validation\Rule;
@@ -74,9 +73,6 @@ class StoreTaskRequest extends FormRequest
             ],
             'step' => [
                 new Enum(TaskStep::class),
-            ],
-            'step_status' => [
-                new Enum(TaskStepStatus::class),
             ],
         ];
     }

@@ -41,6 +41,7 @@ class TaskResource extends JsonResource
                 return UserResource::collection($this->members->slice(0, 3));
             }),
             'measurements' => MeasurementResource::collection($this->whenLoaded('measurements')),
+            'subtasks' => self::collection($this->whenLoaded('children')),
         ];
     }
 }

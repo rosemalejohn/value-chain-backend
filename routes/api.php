@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Guest\TaskController as GuestTaskController;
+use App\Http\Controllers\Guest\UserController as GuestUserController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\TaskAttachmentController;
 use App\Http\Controllers\TaskController;
@@ -26,6 +28,16 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('auth/login', 'login')->name('auth.login');
     Route::get('auth/user', 'user')->name('auth.user');
     Route::post('auth/logout', 'logout')->name('auth.logout');
+});
+
+Route::middleware('guest')->prefix('guest')->group(function () {
+    Route::controller(GuestTaskController::class)->group(function () {
+        Route::post('tasks', 'store')->name('guest.tasks.store');
+    });
+
+    Route::controller(GuestUserController::class)->group(function () {
+        Route::get('users', 'index')->name('guest.users.index');
+    });
 });
 
 Route::middleware('auth')->group(function () {

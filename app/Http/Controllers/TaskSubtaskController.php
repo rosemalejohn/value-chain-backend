@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatus;
 use App\Http\Requests\StoreSubtaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -16,6 +17,8 @@ class TaskSubtaskController extends Controller
         $subtask = $task->children()->create([
             'created_by' => auth()->id(),
             'initiator_id' => auth()->id(),
+            'order' => 1,
+            'status' => TaskStatus::Accepted,
             ...$request->only([
                 'title',
                 'description',

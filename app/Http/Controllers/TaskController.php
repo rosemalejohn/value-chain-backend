@@ -31,7 +31,7 @@ class TaskController extends Controller
                 'title',
                 'priority',
                 'impact',
-                'status'
+                'status',
             ])
             ->paginate(request('perPage', 20));
 
@@ -74,7 +74,8 @@ class TaskController extends Controller
             'attachments',
             'initiator',
             'measurements',
-            'children.members.avatar'
+            'children.members.avatar',
+            'manuals.fileAttachment'
         );
 
         return new TaskResource($task);

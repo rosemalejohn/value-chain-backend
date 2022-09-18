@@ -107,7 +107,7 @@ class Task extends Model implements HasMedia
      */
     public function manuals(): BelongsToMany
     {
-        return $this->belongsToMany(Manual::class);
+        return $this->belongsToMany(Manual::class, 'task_manuals');
     }
 
     /**

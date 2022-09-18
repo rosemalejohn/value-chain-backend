@@ -21,7 +21,7 @@ class TaskManualController extends Controller
             ],
         ]);
 
-        $task->manuals()->attach($request->manual_id);
+        $task->manuals()->syncWithoutDetaching($request->manual_id);
 
         $task->load('manuals');
 

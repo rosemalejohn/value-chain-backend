@@ -25,6 +25,18 @@ class TaskSubtaskController extends Controller
             ]),
         ]);
 
+        // Assign same members
+        $subtask->members()->sync(
+            $task->members()
+                ->get()
+                ->mapWithKeys(function ($member) {
+                    return [
+                        $member->id => $member->pivot->only('role'),
+                    ];
+                })
+                ->toArray()
+        );
+
         // @todo assign members
 
         return new TaskResource($subtask);

@@ -42,6 +42,9 @@ class TaskResource extends JsonResource
             }),
             'measurements' => MeasurementResource::collection($this->whenLoaded('measurements')),
             'subtasks' => self::collection($this->whenLoaded('children')),
+            'manuals' => ManualResource::collection($this->whenLoaded('manuals')),
+            // Computed
+            'is_subtask' => filled($this->parent_id),
         ];
     }
 }

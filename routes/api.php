@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guest\TaskController as GuestTaskController;
 use App\Http\Controllers\Guest\UserController as GuestUserController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\MeasurementController;
 use App\Http\Controllers\TaskAttachmentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskManualController;
@@ -56,7 +57,6 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(TaskMeasurementController::class)->group(function () {
         Route::post('tasks/{task}/measurements', 'store')->name('tasks.measurements.store');
-        Route::put('tasks/{task}/measurements/{task_measurement}', 'update')->name('tasks.measurements.update');
         Route::delete('tasks/{task}/measurements/{task_measurement}', 'destroy')->name('tasks.measurement.destroy');
     });
 
@@ -77,6 +77,10 @@ Route::middleware('auth')->group(function () {
         Route::get('manuals', 'index')->name('manuals.index');
         Route::post('manuals', 'store')->name('manuals.store');
         Route::put('manuals/{manual}', 'update')->name('manuals.update');
+    });
+
+    Route::controller(MeasurementController::class)->group(function () {
+        Route::get('measurements', 'index')->name('measurements.index');
     });
 
     Route::put('tasks/{task}/status', TaskStatusController::class)->name('task.status.update');

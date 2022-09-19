@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Task;
+use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTaskMeasurement extends FormRequest
 {
@@ -14,7 +15,10 @@ class StoreTaskMeasurement extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->can('create', new Task());
+        return $this->user()->hasRole([
+            UserRole::Measurement->value,
+            UserRole::Admin->value,
+        ]);
     }
 
     /**
@@ -25,8 +29,14 @@ class StoreTaskMeasurement extends FormRequest
     public function rules()
     {
         return [
-            'measurement_id' => 'required|exists:measurements,id',
-            'is_checked' => 'required|boolean',
+            'measurement_id' => [
+                Rule::requiredIf(is_null($this->measurement)),
+                'exists:measurements,id',
+            ],
+            'measurement' => [
+                Rule::requiredIf(is_null($this->measurement_id)),
+            ],
+            'is_checked' => 'sometimes|required|boolean',
         ];
     }
 }

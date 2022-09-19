@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreTaskMeasurement;
-use App\Http\Resources\TaskMeasurementResource;
+use App\Http\Resources\TaskResource;
+use App\Models\Measurement;
 use App\Models\Task;
 use App\Models\TaskMeasurement;
-use Illuminate\Http\Request;
 
 class TaskMeasurementController extends Controller
 {
@@ -15,24 +15,18 @@ class TaskMeasurementController extends Controller
      */
     public function store(StoreTaskMeasurement $request, Task $task)
     {
-        $taskMeasurement = $task->measurements()->create([
-            'measurement_id' => $request->measurement_id,
-            'checked_at' => $request->is_checked ? now() : null,
-        ]);
-
-        return new TaskMeasurementResource($taskMeasurement);
-    }
-
-    /**
-     * Update task measurement
-     */
-    public function update(Request $request, Task $task, TaskMeasurement $taskMeasurement)
-    {
-        if ($request->has('is_checked')) {
-            $taskMeasurement->checked_at = $request->is_checked ? now() : null;
+        $measurementId = $request->measurement_id;
+        if (is_null($measurementId)) {
+            $measurement = Measurement::create(
+                $request->only('measurement')
+            );
+            $measurementId = $measurement->id;
         }
 
-        $taskMeasurement->save();
+        $task->measurements()->syncWithoutDetaching($measurementId);
+        $task->load('measurements');
+
+        return new TaskResource($task);
     }
 
     /**

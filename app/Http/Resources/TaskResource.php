@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Str;
 
 class TaskResource extends JsonResource
 {
@@ -18,6 +19,7 @@ class TaskResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'short_description' => Str::limit(strip_tags($this->description), 75),
             'outcome' => $this->outcome,
             'priority' => $this->priority,
             'priority_text' => optional($this->priority)->description(),

@@ -19,6 +19,7 @@ class MeasurementResource extends JsonResource
             'measurement' => $this->measurement,
             'task_measurement' => $this->whenPivotLoaded('task_measurements', function () {
                 return [
+                    'id' => $this->pivot->id,
                     'checked_at' => $this->pivot->checked_at,
                     'is_checked' => filled($this->pivot->checked_at),
                 ];

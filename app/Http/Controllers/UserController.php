@@ -49,7 +49,7 @@ class UserController extends Controller
 
             $user->load('roles', 'avatar');
 
-            // Mail::to($user)->queue(new UserCreated($user));
+            Mail::to($user)->queue(new UserCreated($user, $password));
 
             return $user;
         });

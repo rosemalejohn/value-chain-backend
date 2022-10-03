@@ -23,4 +23,15 @@ class TaskAttachmentController extends Controller
 
         return new MediaResource($attachment);
     }
+
+    /**
+     * Remove task attachment
+     */
+    public function destroy(Task $task, int $mediaId)
+    {
+        $media = $task->attachments()->find($mediaId);
+        $media->delete();
+
+        return $this->respondWithEmptyData();
+    }
 }

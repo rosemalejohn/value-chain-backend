@@ -22,6 +22,7 @@ class TaskSubtaskController extends Controller
             ...$request->only([
                 'title',
                 'description',
+                'outcome',
             ]),
         ]);
 
@@ -37,7 +38,16 @@ class TaskSubtaskController extends Controller
                 ->toArray()
         );
 
-        // @todo assign members
+        return new TaskResource($subtask);
+    }
+
+    /**
+     * Complete subtask
+     */
+    public function complete(Task $task, Task $subtask): TaskResource
+    {
+        $subtask->completed_at = now();
+        $subtask->save();
 
         return new TaskResource($subtask);
     }

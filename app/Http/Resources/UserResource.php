@@ -30,6 +30,10 @@ class UserResource extends JsonResource
                     'role' => $this->pivot->role,
                 ];
             }),
+            // Counts
+            'created_tasks_count' => $this->when(isset($this->created_tasks_count), $this->created_tasks_count),
+            'accepted_created_tasks_count' => $this->when(isset($this->accepted_created_tasks_count), $this->accepted_created_tasks_count),
+            'pending_created_tasks_count' => $this->when(isset($this->pending_created_tasks_count), $this->pending_created_tasks_count),
         ];
     }
 }

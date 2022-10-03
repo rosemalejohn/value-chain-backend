@@ -29,7 +29,8 @@ return new class() extends Migration
             $table->tinyInteger('step')->nullable();
             $table->integer('order');
             $table->dateTime('due_date')->nullable();
-            $table->float('estimate')->nullable();
+            $table->string('estimate')->nullable();
+            $table->string('total_duration')->nullable();
             $table->timestamp('completed_at')->nullable();
             $table->timestamp('archived_at')->nullable();
             $table->timestamps();

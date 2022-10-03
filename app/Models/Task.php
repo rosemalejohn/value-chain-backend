@@ -99,7 +99,7 @@ class Task extends Model implements HasMedia
     public function measurements(): BelongsToMany
     {
         return $this->belongsToMany(Measurement::class, 'task_measurements')
-            ->withPivot('checked_at');
+            ->withPivot('id', 'checked_at');
     }
 
     /**

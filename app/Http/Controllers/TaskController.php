@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeployTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
+use App\Mail\TaskStepUpdated;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Mail;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -51,6 +55,7 @@ class TaskController extends Controller
             'priority' => $request->priority,
             'impact' => $request->impact,
             'due_date' => $request->due_date,
+            'estimate' => $request->estimate,
             'order' => 1,
         ]);
 
@@ -69,6 +74,7 @@ class TaskController extends Controller
     public function show(Task $task): TaskResource
     {
         $task->load(
+            'parent',
             'members.avatar',
             'createdBy',
             'attachments',
@@ -102,11 +108,35 @@ class TaskController extends Controller
 
         $task->save();
 
+        if ($request->has('step') && $task->isDirty('step')) {
+            // Send email to recipients
+            $recipients = User::query()
+                ->whereHas('roles', function ($query) use ($task) {
+                    $query->where('name', $task->step->userRole());
+                })
+                ->pluck('email')
+                ->toArray();
+            Mail::to($recipients)->queue(new TaskStepUpdated($task));
+        }
+
         if ($request->has('members')) {
             $task->members()->sync($request->formatted_members);
         }
 
         $task->load('members');
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * Deploy task
+     */
+    public function deploy(DeployTaskRequest $request, Task $task)
+    {
+        $task->completed_at = now();
+        $task->total_duration = $request->total_duration;
+        $task->step = null;
+        $task->save();
 
         return new TaskResource($task);
     }

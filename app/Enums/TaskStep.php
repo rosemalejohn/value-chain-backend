@@ -23,4 +23,18 @@ enum TaskStep: int implements HasDescription
             self::Deployment => 'Deployment',
         };
     }
+
+    /**
+     * User roles for this step
+     */
+    public function userRole(): UserRole
+    {
+        return match($this) {
+            self::Measurement => UserRole::Measurement,
+            self::AbTesting => UserRole::AbTester,
+            self::Staging => UserRole::Staging,
+            self::QaTesting => UserRole::QATester,
+            self::Deployment => UserRole::Deployment,
+        };
+    }
 }

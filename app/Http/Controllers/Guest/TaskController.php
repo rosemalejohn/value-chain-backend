@@ -24,6 +24,7 @@ class TaskController extends Controller
             'priority' => $request->priority,
             'impact' => $request->impact,
             'due_date' => $request->due_date,
+            'estimate' => $request->estimate,
             'order' => 1,
         ]);
 

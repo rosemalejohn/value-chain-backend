@@ -63,6 +63,7 @@ class AuthController extends Controller
         }
 
         $user->load('avatar');
+        $user->loadCount('createdTasks', 'acceptedCreatedTasks', 'pendingCreatedTasks');
 
         return new UserResource($user);
     }

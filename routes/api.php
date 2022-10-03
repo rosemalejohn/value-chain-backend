@@ -53,6 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::post('tasks', 'store')->name('tasks.store');
         Route::get('tasks/{task}', 'show')->name('tasks.show');
         Route::put('tasks/{task}', 'update')->name('tasks.update');
+        Route::post('tasks/{task}/deploy', 'deploy')->name('tasks.deploy');
     });
 
     Route::controller(TaskMeasurementController::class)->group(function () {
@@ -67,10 +68,13 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(TaskSubtaskController::class)->group(function () {
         Route::post('tasks/{task}/subtasks', 'store')->name('tasks.subtasks.store');
+        Route::post('tasks/{task}/subtasks/{subtask}/complete', 'complete')->name('tasks.subtasks.complete');
     });
 
     Route::controller(TaskAttachmentController::class)->group(function () {
         Route::post('tasks/{task}/attachments', 'store')->name('tasks.attachments.store');
+        Route::delete('tasks/{task}/attachments/{media}', 'destroy')
+            ->name('tasks.attachments.destroy');
     });
 
     Route::controller(ManualController::class)->group(function () {

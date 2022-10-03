@@ -17,6 +17,7 @@ class TaskResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'parent_id' => $this->parent_id,
             'title' => $this->title,
             'description' => $this->description,
             'short_description' => Str::limit(strip_tags($this->description), 75),
@@ -30,6 +31,8 @@ class TaskResource extends JsonResource
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
             'due_date' => optional($this->due_date)->format('Y-m-d'),
+            'estimate' => $this->estimate,
+            'is_completed' => filled($this->completed_at),
             'completed_at' => $this->completed_at,
             'archived_at' => $this->archived_at,
             'created_at' => $this->created_at,
@@ -42,6 +45,7 @@ class TaskResource extends JsonResource
             'min_members' => $this->when($this->relationLoaded('members'), function () {
                 return UserResource::collection($this->members->slice(0, 3));
             }),
+            'parent' => new static($this->whenLoaded('parent')),
             'measurements' => MeasurementResource::collection($this->whenLoaded('measurements')),
             'subtasks' => self::collection($this->whenLoaded('children')),
             'manuals' => ManualResource::collection($this->whenLoaded('manuals')),

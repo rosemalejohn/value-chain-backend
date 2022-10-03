@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Enums\MediaCollectionType;
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -89,5 +90,21 @@ class User extends Authenticatable implements HasMedia
     public function createdTasks(): HasMany
     {
         return $this->hasMany(Task::class, 'created_by');
+    }
+
+    /**
+     * Accepted created tasks
+     */
+    public function acceptedCreatedTasks(): HasMany
+    {
+        return $this->createdTasks()->whereStatus(TaskStatus::Accepted);
+    }
+
+    /**
+     * Pending created tasks
+     */
+    public function pendingCreatedTasks(): HasMany
+    {
+        return $this->createdTasks()->whereStatus(TaskStatus::Pending);
     }
 }

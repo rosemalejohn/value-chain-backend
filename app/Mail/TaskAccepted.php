@@ -18,7 +18,6 @@ class TaskAccepted extends Mailable
      */
     public function __construct(public Task $task)
     {
-
     }
 
     /**

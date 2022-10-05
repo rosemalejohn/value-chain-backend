@@ -5,6 +5,7 @@ use App\Http\Controllers\Guest\TaskController as GuestTaskController;
 use App\Http\Controllers\Guest\UserController as GuestUserController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\MeasurementController;
+use App\Http\Controllers\TaskAbTestController;
 use App\Http\Controllers\TaskAttachmentController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskManualController;
@@ -75,6 +76,12 @@ Route::middleware('auth')->group(function () {
         Route::post('tasks/{task}/attachments', 'store')->name('tasks.attachments.store');
         Route::delete('tasks/{task}/attachments/{media}', 'destroy')
             ->name('tasks.attachments.destroy');
+    });
+
+    Route::controller(TaskAbTestController::class)->group(function () {
+        Route::post('tasks/{task}/abtests', 'store')->name('tasks.abtests.store');
+        Route::put('tasks/{task}/abtests/{task_abtest_id}', 'update')->name('tasks.abtests.update');
+        Route::delete('tasks/{task}/abtests/{task_abtest_id}', 'destroy')->name('tasks.abtests.destroy');
     });
 
     Route::controller(ManualController::class)->group(function () {

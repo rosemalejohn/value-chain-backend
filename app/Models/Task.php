@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Kalnoy\Nestedset\NodeTrait;
 use Spatie\MediaLibrary\HasMedia;
@@ -107,7 +108,8 @@ class Task extends Model implements HasMedia
      */
     public function manuals(): BelongsToMany
     {
-        return $this->belongsToMany(Manual::class, 'task_manuals');
+        return $this->belongsToMany(Manual::class, 'task_manuals')
+            ->withPivot('id');
     }
 
     /**
@@ -125,6 +127,14 @@ class Task extends Model implements HasMedia
     {
         return $this->morphMany(Media::class, 'model')
             ->where('collection_name', MediaCollectionType::TaskAttachments->value);
+    }
+
+    /**
+     * AB Testing Groups
+     */
+    public function abtests(): HasMany
+    {
+        return $this->hasMany(TaskAbTest::class);
     }
 
     /**

@@ -29,7 +29,7 @@ enum TaskStep: int implements HasDescription
      */
     public function userRole(): UserRole
     {
-        return match($this) {
+        return match ($this) {
             self::Measurement => UserRole::Measurement,
             self::AbTesting => UserRole::AbTester,
             self::Staging => UserRole::Staging,

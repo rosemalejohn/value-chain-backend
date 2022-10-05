@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ManualResource extends JsonResource
+class TaskAbTestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,14 +16,8 @@ class ManualResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
+            'group' => $this->group,
             'description' => $this->description,
-            'file_attachment' => new MediaResource($this->whenLoaded('fileAttachment')),
-            'task_manual' => $this->whenPivotLoaded('task_manuals', function () {
-                return [
-                    'id' => $this->pivot->id,
-                ];
-            }),
         ];
     }
 }

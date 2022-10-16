@@ -18,6 +18,21 @@ class MediaResource extends JsonResource
             'id' => $this->id,
             'file_name' => $this->file_name,
             'url' => $this->getUrl(),
+            'type' => $this->getFileType(),
         ];
+    }
+
+    /**
+     * Check if video or image or file
+     */
+    private function getFileType(): string
+    {
+        if (strstr($this->mime_type, 'video/')) {
+            return 'video';
+        } elseif (strstr($this->mime_type, 'image/')) {
+            return 'image';
+        } else {
+            return 'file';
+        }
     }
 }

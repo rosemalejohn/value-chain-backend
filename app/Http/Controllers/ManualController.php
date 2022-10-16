@@ -67,4 +67,16 @@ class ManualController extends Controller
 
         return new ManualResource($manual);
     }
+
+    /**
+     * Remove manual
+     */
+    public function destroy(Manual $manual)
+    {
+        $this->authorize('delete', $manual);
+
+        $manual->delete();
+
+        return $this->respondWithEmptyData();
+    }
 }

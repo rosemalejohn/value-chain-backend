@@ -88,6 +88,7 @@ Route::middleware('auth')->group(function () {
         Route::get('manuals', 'index')->name('manuals.index');
         Route::post('manuals', 'store')->name('manuals.store');
         Route::put('manuals/{manual}', 'update')->name('manuals.update');
+        Route::delete('manuals/{manual}', 'destroy')->name('manuals.destroy');
     });
 
     Route::controller(MeasurementController::class)->group(function () {

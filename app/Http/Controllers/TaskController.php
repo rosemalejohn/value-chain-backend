@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatus;
+use App\Enums\TaskStep;
 use App\Http\Requests\DeployTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
 use App\Http\Resources\TaskResource;
+use App\Mail\TaskAccepted;
 use App\Mail\TaskStepUpdated;
 use App\Models\Task;
 use App\Models\User;
@@ -107,9 +110,18 @@ class TaskController extends Controller
             ])
         );
 
-        $task->save();
+        // Mail when task is accepted
+        if ($request->has('status') && $task->isDirty('status')) {
+            if ($request->status === TaskStatus::Accepted->value) {
+                $task->step = TaskStep::Measurement;
 
-        if ($request->has('step') && $task->isDirty('step')) {
+                Mail::to($task->initiator)->queue(new TaskAccepted($task));
+            }
+        }
+
+        if ($task->isDirty('step')) {
+            $task->save();
+
             // Send email to recipients
             $recipients = User::query()
                 ->whereHas('roles', function ($query) use ($task) {
@@ -119,6 +131,8 @@ class TaskController extends Controller
                 ->toArray();
             Mail::to($recipients)->queue(new TaskStepUpdated($task));
         }
+
+        $task->save();
 
         if ($request->has('members')) {
             $task->members()->sync($request->formatted_members);

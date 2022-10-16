@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\TaskAssignmentRole;
 use App\Enums\UserRole;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,6 +29,7 @@ class UserResource extends JsonResource
             'task_member' => $this->whenPivotLoaded('task_members', function () {
                 return [
                     'role' => $this->pivot->role,
+                    'role_text' => TaskAssignmentRole::from($this->pivot->role)->description(),
                 ];
             }),
             // Counts

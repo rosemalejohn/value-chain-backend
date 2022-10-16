@@ -2,7 +2,10 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
+use App\Models\Manual;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Contracts\Auth\Authenticatable;
 
 class ManualPolicy
 {
@@ -16,5 +19,13 @@ class ManualPolicy
     public function __construct()
     {
         //
+    }
+
+    /**
+     * Check if user can delete manual
+     */
+    public function delete(Authenticatable $user, Manual $manual)
+    {
+        return $user->hasRole(UserRole::Admin->value);
     }
 }

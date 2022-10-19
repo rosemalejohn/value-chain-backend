@@ -68,6 +68,8 @@ class UserController extends Controller
 
             if ($request->has('roles') && $request->roles) {
                 $user->syncRoles($request->roles);
+            } else {
+                $user->syncRoles([]);
             }
 
             if ($request->has('avatar') && $request->avatar) {

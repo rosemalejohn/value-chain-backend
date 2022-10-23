@@ -144,6 +144,16 @@ class TaskController extends Controller
     }
 
     /**
+     * Delete task
+     */
+    public function destroy(Task $task)
+    {
+        $task->delete();
+
+        return $this->respondWithEmptyData();
+    }
+
+    /**
      * Deploy task
      */
     public function deploy(DeployTaskRequest $request, Task $task)

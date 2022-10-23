@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::post('tasks', 'store')->name('tasks.store');
         Route::get('tasks/{task}', 'show')->name('tasks.show');
         Route::put('tasks/{task}', 'update')->name('tasks.update');
+        Route::delete('tasks/{task}', 'destroy')->name('tasks.destroy');
         Route::post('tasks/{task}/deploy', 'deploy')->name('tasks.deploy');
     });
 

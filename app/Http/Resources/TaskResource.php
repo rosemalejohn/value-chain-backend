@@ -28,6 +28,7 @@ class TaskResource extends JsonResource
             'impact_text' => optional($this->impact)->description(),
             'status' => $this->status,
             'step' => $this->step,
+            'step_text' => optional($this->step)->description(),
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
             'due_date' => optional($this->due_date)->format('Y-m-d'),

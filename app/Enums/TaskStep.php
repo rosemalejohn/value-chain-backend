@@ -4,6 +4,7 @@ namespace App\Enums;
 
 enum TaskStep: int implements HasDescription
 {
+    case Development = 0;
     case Measurement = 1;
     case AbTesting = 2;
     case Staging = 3;
@@ -16,6 +17,7 @@ enum TaskStep: int implements HasDescription
     public function description(): string
     {
         return match ($this) {
+            self::Development => 'Develop',
             self::Measurement => 'Measure',
             self::AbTesting => 'AB Testing',
             self::Staging => 'Staging',

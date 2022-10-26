@@ -12,6 +12,7 @@ use App\Mail\TaskStepUpdated;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -96,49 +97,59 @@ class TaskController extends Controller
      */
     public function update(StoreTaskRequest $request, Task $task): TaskResource
     {
-        $task->fill(
-            $request->only([
-                'initiator_id',
-                'title',
-                'description',
-                'outcome',
-                'priority',
-                'impact',
-                'due_date',
-                'step',
-                'status',
-            ])
-        );
+        $task = DB::transaction(function () use ($request, $task) {
+            $task->fill(
+                $request->only([
+                    'initiator_id',
+                    'title',
+                    'description',
+                    'outcome',
+                    'priority',
+                    'impact',
+                    'due_date',
+                    'step',
+                    'status',
+                ])
+            );
 
-        // Mail when task is accepted
-        if ($request->has('status') && $task->isDirty('status')) {
-            if ($request->status === TaskStatus::Accepted->value) {
-                $task->step = TaskStep::Measurement;
+            // Mail when task is accepted
+            if ($request->has('status') && $task->isDirty('status')) {
+                if ($request->status === TaskStatus::Accepted->value) {
+                    $task->step = TaskStep::Measurement;
 
-                Mail::to($task->initiator)->queue(new TaskAccepted($task));
+                    Mail::to($task->initiator)->queue(new TaskAccepted($task));
+                }
             }
-        }
 
-        if ($task->isDirty('step')) {
+            if ($task->isDirty('step')) {
+                if ($request->step === TaskStep::Development->value) {
+                    $task->status = TaskStatus::Pending;
+                }
+
+                $task->save();
+
+                if ($task->isAccepted()) {
+                    // Send email to recipients
+                    $recipients = User::query()
+                        ->whereHas('roles', function ($query) use ($task) {
+                            $query->where('name', $task->step->userRole());
+                        })
+                        ->pluck('email')
+                        ->toArray();
+                    Mail::to($recipients)->queue(new TaskStepUpdated($task));
+                }
+            }
+
             $task->save();
 
-            // Send email to recipients
-            $recipients = User::query()
-                ->whereHas('roles', function ($query) use ($task) {
-                    $query->where('name', $task->step->userRole());
-                })
-                ->pluck('email')
-                ->toArray();
-            Mail::to($recipients)->queue(new TaskStepUpdated($task));
-        }
+            if ($request->has('members')) {
+                $task->members()->sync($request->formatted_members);
+            }
 
-        $task->save();
+            $task->load('members');
 
-        if ($request->has('members')) {
-            $task->members()->sync($request->formatted_members);
-        }
-
-        $task->load('members');
+            return $task;
+        });
 
         return new TaskResource($task);
     }

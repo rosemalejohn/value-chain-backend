@@ -123,6 +123,14 @@ class Task extends Model implements HasMedia
     }
 
     /**
+     * Check if task is approved
+     */
+    public function isAccepted(): bool
+    {
+        return $this->status === TaskStatus::Accepted;
+    }
+
+    /**
      * Attachments
      */
     public function attachments(): MorphMany

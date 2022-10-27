@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\TaskEstimate;
 use App\Enums\MediaCollectionType;
 use App\Enums\TaskImpact;
 use App\Enums\TaskPriority;
@@ -47,6 +48,7 @@ class Task extends Model implements HasMedia
         'priority' => TaskPriority::class,
         'step' => TaskStep::class,
         'impact' => TaskImpact::class,
+        'estimate' => TaskEstimate::class,
     ];
 
     protected $dates = [

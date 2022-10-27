@@ -33,6 +33,8 @@ class TaskResource extends JsonResource
             'order' => $this->order,
             'due_date' => optional($this->due_date)->format('Y-m-d'),
             'estimate' => $this->estimate,
+            'estimate_duration' => optional($this->estimate)->duration,
+            'estimate_period' => optional($this->estimate)->period,
             'is_completed' => filled($this->completed_at),
             'completed_at' => $this->completed_at,
             'archived_at' => $this->archived_at,

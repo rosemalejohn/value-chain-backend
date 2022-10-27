@@ -14,7 +14,10 @@ class StoreManualRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->hasRole(UserRole::Admin->value);
+        return $this->user()->hasAnyRole(
+            UserRole::Admin->value,
+            UserRole::QATester->value
+        );
     }
 
     /**

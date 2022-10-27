@@ -6,6 +6,7 @@ use App\Enums\TaskStatus;
 use App\Enums\TaskStep;
 use App\Http\Requests\DeployTaskRequest;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Mail\TaskAccepted;
 use App\Mail\TaskStepUpdated;
@@ -95,7 +96,7 @@ class TaskController extends Controller
     /**
      * Update task
      */
-    public function update(StoreTaskRequest $request, Task $task): TaskResource
+    public function update(UpdateTaskRequest $request, Task $task): TaskResource
     {
         $task = DB::transaction(function () use ($request, $task) {
             $task->fill(

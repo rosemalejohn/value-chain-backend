@@ -26,6 +26,8 @@ class TaskController extends Controller
     public function index(): AnonymousResourceCollection
     {
         $tasks = QueryBuilder::for(Task::class)
+            ->with('children')
+            ->whereNull('parent_id')
             ->allowedIncludes([
                 'members.avatar',
                 'initiator',

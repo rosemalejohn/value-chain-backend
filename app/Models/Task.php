@@ -49,6 +49,7 @@ class Task extends Model implements HasMedia
         'step' => TaskStep::class,
         'impact' => TaskImpact::class,
         'estimate' => TaskEstimate::class,
+        'total_duration' => TaskEstimate::class,
     ];
 
     protected $dates = [

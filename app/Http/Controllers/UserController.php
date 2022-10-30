@@ -84,4 +84,16 @@ class UserController extends Controller
 
         return new UserResource($user);
     }
+
+    /**
+     * Delete user
+     */
+    public function destroy(User $user)
+    {
+        $this->authorize('delete', $user);
+
+        $user->delete();
+
+        $this->respondWithEmptyData();
+    }
 }

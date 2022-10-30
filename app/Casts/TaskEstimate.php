@@ -2,7 +2,9 @@
 
 namespace App\Casts;
 
+use App\Enums\PeriodType;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
+use Illuminate\Support\Str;
 use stdClass;
 
 class TaskEstimate implements CastsAttributes
@@ -23,6 +25,11 @@ class TaskEstimate implements CastsAttributes
         $obj = new stdClass();
         $obj->duration = data_get($arr, 0);
         $obj->period = data_get($arr, 1);
+
+        if ($obj->period) {
+            $obj->period_text = PeriodType::from($obj->period)->description();
+            $obj->period_text = Str::plural($obj->period_text, $obj->duration);
+        }
 
         return $obj;
     }

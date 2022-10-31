@@ -5,6 +5,7 @@ use App\Http\Controllers\Guest\TaskController as GuestTaskController;
 use App\Http\Controllers\Guest\UserController as GuestUserController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\MeasurementController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskAbTestController;
 use App\Http\Controllers\TaskAttachmentController;
 use App\Http\Controllers\TaskController;
@@ -43,6 +44,10 @@ Route::middleware('guest')->prefix('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::post('profile', 'update')->name('profile.update');
+    });
+
     Route::controller(UserController::class)->group(function () {
         Route::get('users', 'index')->name('users.index');
         Route::post('users', 'store')->name('users.store');

@@ -192,6 +192,6 @@ class Task extends Model implements HasMedia
      */
     public function isStepForward(): bool
     {
-        return $this->step->value > $this->from_step->value && is_null($this->parent_id);
+        return optional($this->step)->value > optional($this->from_step)->value && is_null($this->parent_id);
     }
 }

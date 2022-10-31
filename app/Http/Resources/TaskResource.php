@@ -29,9 +29,12 @@ class TaskResource extends JsonResource
             'impact_text' => optional($this->impact)->description(),
             'status' => $this->status,
             'step' => $this->step,
+            'from_step' => $this->from_step,
             'step_text' => optional($this->step)->description(),
+            'from_step_text' => optional($this->from_step)->description(),
             'status_text' => optional($this->status)->description(),
             'order' => $this->order,
+            'remarks' => $this->remarks,
             'due_date' => optional($this->due_date)->format('Y-m-d'),
             'estimate' => $this->estimate,
             'estimate_duration' => optional($this->estimate)->duration,
@@ -57,6 +60,7 @@ class TaskResource extends JsonResource
             'abtests' => TaskAbTestResource::collection($this->whenLoaded('abtests')),
             // Computed
             'is_subtask' => filled($this->parent_id),
+            'is_step_forward' => $this->isStepForward(),
         ];
     }
 }

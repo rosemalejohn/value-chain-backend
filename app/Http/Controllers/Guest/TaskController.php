@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers\Guest;
 
+use App\Enums\MediaCollectionType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
+use App\Http\Resources\MediaResource;
 use App\Http\Resources\TaskResource;
+use App\Models\Task;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -29,5 +33,20 @@ class TaskController extends Controller
         ]);
 
         return new TaskResource($task);
+    }
+
+    /**
+     * Upload task attachments
+     */
+    public function storeAttachments(Request $request, Task $task): MediaResource
+    {
+        $this->validate($request, [
+            'attachment' => 'required|file',
+        ]);
+
+        $attachment = $task->addMedia($request->attachment)
+            ->toMediaCollection(MediaCollectionType::TaskAttachments->value);
+
+        return new MediaResource($attachment);
     }
 }

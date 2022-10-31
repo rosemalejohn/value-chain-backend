@@ -36,6 +36,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('guest')->prefix('guest')->group(function () {
     Route::controller(GuestTaskController::class)->group(function () {
         Route::post('tasks', 'store')->name('guest.tasks.store');
+        Route::post('tasks/{task}/attachments', 'storeAttachments')->name('guest.tasks.attachments');
     });
 
     Route::controller(GuestUserController::class)->group(function () {

@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->after('outcome', function ($table) {
-                $table->string('url')->nullable();
+            $table->after('step', function (Blueprint $table) {
+                $table->tinyInteger('from_step')->nullable();
+            });
+            $table->after('estimate', function (Blueprint $table) {
+                $table->text('remarks')->nullable();
             });
         });
     }
@@ -28,7 +31,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropColumn(['url']);
+            $table->dropColumn(['remarks', 'from_step']);
         });
     }
 };

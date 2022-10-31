@@ -113,6 +113,7 @@ class TaskController extends Controller
                     'step',
                     'status',
                     'estimate',
+                    'remarks',
                 ])
             );
 
@@ -126,6 +127,8 @@ class TaskController extends Controller
             }
 
             if ($task->isDirty('step')) {
+                $task->from_step = $task->getOriginal('step');
+
                 if ($request->step === TaskStep::Development->value) {
                     $task->status = TaskStatus::Pending;
                 }

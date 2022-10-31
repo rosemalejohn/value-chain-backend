@@ -38,15 +38,18 @@ class Task extends Model implements HasMedia
         'impact',
         'status',
         'step',
+        'from_step',
         'order',
         'due_date',
         'estimate',
+        'remarks',
     ];
 
     protected $casts = [
         'status' => TaskStatus::class,
         'priority' => TaskPriority::class,
         'step' => TaskStep::class,
+        'from_step' => TaskStep::class,
         'impact' => TaskImpact::class,
         'estimate' => TaskEstimate::class,
         'total_duration' => TaskEstimate::class,
@@ -182,5 +185,13 @@ class Task extends Model implements HasMedia
         $query->whereHas('members', function ($query) {
             $query->where('user_id', auth()->id());
         })->accepted();
+    }
+
+    /**
+     * Check if step is forward
+     */
+    public function isStepForward(): bool
+    {
+        return $this->step->value > $this->from_step->value && is_null($this->parent_id);
     }
 }

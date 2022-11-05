@@ -35,7 +35,7 @@ class ProfileRequest extends FormRequest
             'password' => [
                 'confirmed',
             ],
-            'avatar' => 'nullable|image',
+            'avatar' => 'sometimes|nullable|image',
         ];
     }
 }

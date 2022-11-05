@@ -43,6 +43,7 @@ class TaskController extends Controller
                 'priority',
                 'impact',
                 'status',
+                'updated_at',
             ])
             ->paginate(request('perPage', 20));
 

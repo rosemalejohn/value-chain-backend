@@ -61,9 +61,11 @@ class ManualController extends Controller
         );
         $manual->save();
 
-        $manual->addMedia($request->file_attachment)
-            ->toMediaCollection(MediaCollectionType::ManualFile->value);
-        $manual->load('fileAttachment');
+        if ($request->has('file_attachment')) {
+            $manual->addMedia($request->file_attachment)
+                ->toMediaCollection(MediaCollectionType::ManualFile->value);
+            $manual->load('fileAttachment');
+        }
 
         return new ManualResource($manual);
     }

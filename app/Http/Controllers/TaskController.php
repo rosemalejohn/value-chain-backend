@@ -45,7 +45,7 @@ class TaskController extends Controller
                 'status',
                 'updated_at',
             ])
-            ->paginate(request('perPage', 20));
+            ->paginate(request()->perPage(20));
 
         return TaskResource::collection($tasks);
     }
@@ -122,22 +122,19 @@ class TaskController extends Controller
             // Mail when task is accepted
             if ($request->has('status') && $task->isDirty('status')) {
                 if ($request->status === TaskStatus::Accepted->value) {
-                    $task->step = TaskStep::Measurement;
+                    $task->step = TaskStep::Development;
 
                     Mail::to($task->initiator)->queue(new TaskAccepted($task));
                 }
             }
 
-            if ($task->isDirty('step')) {
+            if ($task->isDirty('step') && $task->isAccepted()) {
                 $task->from_step = $task->getOriginal('step');
-
-                if ($request->step === TaskStep::Development->value) {
-                    $task->status = TaskStatus::Pending;
-                }
-
                 $task->save();
 
-                if ($task->isAccepted()) {
+                if ($task->step === TaskStep::Development) {
+                    $recipients = $task->members()->pluck('email')->toArray();
+                } else {
                     // Send email to recipients
                     $recipients = User::query()
                         ->whereHas('roles', function ($query) use ($task) {
@@ -145,8 +142,9 @@ class TaskController extends Controller
                         })
                         ->pluck('email')
                         ->toArray();
-                    Mail::to($recipients)->queue(new TaskStepUpdated($task));
                 }
+
+                Mail::to($recipients)->queue(new TaskStepUpdated($task));
             }
 
             $task->save();

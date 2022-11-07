@@ -23,7 +23,7 @@ class ManualController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('search'),
             ])
-            ->paginate(request('limit', 10));
+            ->paginate(request()->perPage(10));
 
         return ManualResource::collection($manuals);
     }

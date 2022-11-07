@@ -17,7 +17,7 @@ class UserController extends Controller
     {
         $users = QueryBuilder::for(User::class)
             ->allowedIncludes('roles', 'avatar')
-            ->paginate(request('perPage', 10));
+            ->paginate(request()->perPage(10));
 
         return UserResource::collection($users);
     }

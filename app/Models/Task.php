@@ -121,6 +121,14 @@ class Task extends Model implements HasMedia
     }
 
     /**
+     * Task links
+     */
+    public function links(): HasMany
+    {
+        return $this->hasMany(TaskLink::class);
+    }
+
+    /**
      * Check if user is owner of task
      */
     public function isOwner(User $user): bool

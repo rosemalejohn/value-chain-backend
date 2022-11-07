@@ -58,6 +58,7 @@ class TaskResource extends JsonResource
             'subtasks' => self::collection($this->whenLoaded('children')),
             'manuals' => ManualResource::collection($this->whenLoaded('manuals')),
             'abtests' => TaskAbTestResource::collection($this->whenLoaded('abtests')),
+            'links' => TaskLinkResource::collection($this->whenLoaded('links')),
             // Computed
             'is_subtask' => filled($this->parent_id),
             'is_step_forward' => $this->isStepForward(),

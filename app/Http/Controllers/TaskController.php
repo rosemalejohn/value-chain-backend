@@ -90,7 +90,8 @@ class TaskController extends Controller
             'measurements',
             'children.members.avatar',
             'manuals.fileAttachment',
-            'abtests'
+            'abtests',
+            'links'
         );
 
         return new TaskResource($task);

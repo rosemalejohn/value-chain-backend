@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskAbTestController;
 use App\Http\Controllers\TaskAttachmentController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskLinkController;
 use App\Http\Controllers\TaskManualController;
 use App\Http\Controllers\TaskMeasurementController;
 use App\Http\Controllers\TaskStatusController;
@@ -97,6 +98,11 @@ Route::middleware('auth')->group(function () {
         Route::post('manuals', 'store')->name('manuals.store');
         Route::put('manuals/{manual}', 'update')->name('manuals.update');
         Route::delete('manuals/{manual}', 'destroy')->name('manuals.destroy');
+    });
+
+    Route::controller(TaskLinkController::class)->group(function () {
+        Route::post('tasks/{task}/links', 'store')->name('tasks.links.store');
+        Route::delete('tasks/{task}/links/{link}', 'destroy')->name('tasks.links.destroy');
     });
 
     Route::controller(MeasurementController::class)->group(function () {

@@ -37,6 +37,7 @@ class TaskController extends Controller
                 AllowedFilter::exact('step'),
                 AllowedFilter::exact('priority'),
                 AllowedFilter::scope('assigned'),
+                AllowedFilter::exact('initiator_id')
             ])
             ->allowedSorts([
                 'title',

@@ -31,6 +31,8 @@ class MediaResource extends JsonResource
             return 'video';
         } elseif (strstr($this->mime_type, 'image/')) {
             return 'image';
+        } elseif ($this->mime_type === 'application/pdf') {
+            return 'pdf';
         } else {
             return 'file';
         }

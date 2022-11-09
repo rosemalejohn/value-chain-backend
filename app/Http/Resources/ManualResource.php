@@ -24,6 +24,8 @@ class ManualResource extends JsonResource
                     'id' => $this->pivot->id,
                 ];
             }),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
         ];
     }
 }

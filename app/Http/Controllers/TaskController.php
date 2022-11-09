@@ -129,6 +129,10 @@ class TaskController extends Controller
                 }
             }
 
+            if ($request->has('members')) {
+                $task->members()->sync($request->formatted_members);
+            }
+
             if ($task->isDirty('step') && $task->isAccepted()) {
                 $task->from_step = $task->getOriginal('step');
                 $task->save();
@@ -145,14 +149,12 @@ class TaskController extends Controller
                         ->toArray();
                 }
 
-                Mail::to($recipients)->queue(new TaskStepUpdated($task));
+                if (isset($recipients) && $recipients) {
+                    Mail::to($recipients)->queue(new TaskStepUpdated($task));
+                }
             }
 
             $task->save();
-
-            if ($request->has('members')) {
-                $task->members()->sync($request->formatted_members);
-            }
 
             $task->load('members');
 

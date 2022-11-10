@@ -26,6 +26,9 @@ class ManualPolicy
      */
     public function delete(Authenticatable $user, Manual $manual)
     {
-        return $user->hasRole(UserRole::Admin->value);
+        return $user->hasAnyRole(
+            UserRole::Admin->value,
+            UserRole::QATester->value
+        );
     }
 }

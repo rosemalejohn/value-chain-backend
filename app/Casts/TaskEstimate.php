@@ -26,7 +26,7 @@ class TaskEstimate implements CastsAttributes
         $obj->duration = data_get($arr, 0);
         $obj->period = data_get($arr, 1);
 
-        if ($obj->period) {
+        if ($obj->period && $obj->period !== 'null') {
             $obj->period_text = PeriodType::from($obj->period)->description();
             $obj->period_text = Str::plural($obj->period_text, $obj->duration);
         }

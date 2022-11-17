@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Enums\TaskAssignmentRole;
 use App\Enums\TaskStatus;
+use App\Enums\TaskStep;
 use App\Enums\UserRole;
 use App\Models\Task;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -18,12 +19,15 @@ class TaskPolicy
      */
     public function update(Authenticatable $user, Task $task)
     {
+        $userRole = null;
         $isManager = $task->members()
             ->whereId($user->id)
             ->wherePivot('role', TaskAssignmentRole::Manager->value)
             ->exists();
 
-        $userRole = optional($task->step)->userRole();
+        if ($task->step !== TaskStep::Development) {
+            $userRole = optional($task->step)->userRole();
+        }
 
         $canChangeStep = $userRole ? $user->hasRole($userRole->value) : false;
 

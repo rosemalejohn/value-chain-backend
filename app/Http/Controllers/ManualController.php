@@ -23,6 +23,11 @@ class ManualController extends Controller
             ->allowedFilters([
                 AllowedFilter::scope('search'),
             ])
+            ->allowedSorts([
+                'created_at',
+                'updated_at',
+                'title',
+            ])
             ->paginate(request()->perPage(10));
 
         return ManualResource::collection($manuals);

@@ -23,7 +23,11 @@ class TaskPolicy
             ->wherePivot('role', TaskAssignmentRole::Manager->value)
             ->exists();
 
-        return $task->isOwner($user) || $isManager || $user->hasRole(UserRole::Admin->value);
+        $userRole = optional($task->step)->userRole();
+
+        $canChangeStep = $userRole ? $user->hasRole($userRole->value) : false;
+
+        return $task->isOwner($user) || $isManager || $user->hasRole(UserRole::Admin->value) || $canChangeStep;
     }
 
     /**

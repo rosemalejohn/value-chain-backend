@@ -202,4 +202,12 @@ class Task extends Model implements HasMedia
     {
         return optional($this->step)->value > optional($this->from_step)->value && is_null($this->parent_id);
     }
+
+    /**
+     * Check if user is initiator
+     */
+    public function isInitiator(User $user): bool
+    {
+        return $this->initiator_id === $user->getKey();
+    }
 }

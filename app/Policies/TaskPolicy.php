@@ -29,7 +29,9 @@ class TaskPolicy
 
         $canChangeStep = $userRole ? $user->hasRole($userRole->value) : false;
 
-        return $task->isOwner($user) || $isMember || $user->hasRole(UserRole::Admin->value) || $canChangeStep;
+        $isInitiator = $task->isInitiator($user) && $task->status === TaskStatus::Pending;
+
+        return $task->isOwner($user) || $isMember || $user->hasRole(UserRole::Admin->value) || $canChangeStep || $isInitiator;
     }
 
     /**
